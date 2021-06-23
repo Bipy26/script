@@ -31,7 +31,7 @@ yum makecache
 
 # 安装常用软件
 yum install -y vim bash-completion bash-completion-extras zip unzip make gcc gcc-c++ git wget lsof net-tools psmisc mtr iotop iftop bind-utils tree dos2unix nmap htop
-yum -y update
+# yum -y update
 
 # 修改时区
 # timedatectl开启的ntp服务取决于chronyd或者ntpd哪个被安装
