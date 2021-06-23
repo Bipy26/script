@@ -30,7 +30,9 @@ yum clean all
 yum makecache
 
 # 安装常用软件
-yum install -y vim bash-completion bash-completion-extras zip unzip make gcc gcc-c++ git wget lsof net-tools psmisc mtr iotop iftop bind-utils tree dos2unix nmap htop
+# yum install -y vim bash-completion bash-completion-extras zip unzip make gcc gcc-c++ git wget lsof net-tools psmisc mtr iotop iftop bind-utils tree dos2unix nmap htop
+yum install -y vim bash-completion bash-completion-extras git wget lsof net-tools psmisc mtr iotop iftop bind-utils tree htop
+
 # yum -y update
 
 # 修改时区
