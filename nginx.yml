@@ -1,0 +1,20 @@
+---
+- hosts: test
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure kernel
+    command: uname -a
+  - name: ensure connect to internet
+    command: ping baidu.com -c 5
+  - name: install nginx
+    command: yum install -y nginx
+  - name: copy file to hosts
+    copy: src=/etc/nginx/conf.d/test.conf dest=/etc/nginx/conf.d/test.conf
+    notify:
+    - restart nginx
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
