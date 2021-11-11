@@ -307,7 +307,7 @@ install_wg_pkgs() {
 
 # Install from repository
 install_wg_1() {
-    install_wg_pkgs
+    # install_wg_pkgs
     _info "Install wireguard from repository"
     case "$(_os)" in
         ubuntu)
@@ -330,9 +330,13 @@ install_wg_1() {
             ;;
         centos)
             if [ -n "$(_os_ver)" -a "$(_os_ver)" -eq 7 ]; then
-                _error_detect "curl -Lso /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo"
+                # _error_detect "curl -Lso /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo"
+                _error_detect "yum -y install epel-release"
+                _error_detect "yum -y install elrepo-release"
+                _error_detect "yum -y install yum-plugin-elrepo"
             fi
             if [ -n "$(_os_ver)" -a "$(_os_ver)" -eq 8 ]; then
+                _error_detect "yum -y install epel-release"
                 _error_detect "yum -y install elrepo-release"
                # _error_detect "curl -Lso /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-8/jdoss-wireguard-epel-8.repo"
             fi
