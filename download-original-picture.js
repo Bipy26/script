@@ -63,7 +63,7 @@ head[0].insertAdjacentHTML('beforeend', `<style type="text/css">
 
 
 console.warn('Welcome to %c \ud83d\ude48\ud83d\ude49\ud83d\ude4a\u0020\u0048\u007a\u00b2\u0020\u0053\u0063\u0072\u0069\u0070\u0074\u0020\u004c\u0069\u0062\u0072\u0061\u0072\u0079 %c v0.06 ', 'background-color:teal;color: white;border:1px solid teal;border-radius: 4px 0 0 4px;border-left-width:0;padding:1px;margin:2px 0;font-size:1.1em', 'background-color:#777;color: white;border:1px solid #777;border-radius: 0 4px 4px 0;border-right-width:0;padding:1px;margin:5px 0;');
- 
+
 const openDown = (url, e, name) => {
   e && e.preventDefault();
   e && e.stopPropagation()
@@ -127,7 +127,7 @@ const createDom = (cfg) => {
   })
   const newName = name || lastItem(link.split('/'))
   domDL.onclick = e => openDown(link, e, newName)
-  const next = parent && parent.nextElementSibling
+  let next = parent && parent.nextElementSibling
   if (next && next.className.includes('hx-download-original-images-tool')) {
     next = domDL
   } else {
@@ -208,13 +208,13 @@ const init = () => {
         link: x.src && x.src.replace('-scaled', ''),
         name: `${x.alt || x.title}_${i}.jpg`
       }))
-      domDL.title += ' ' + imgList.length 
+      domDL.title += ' ' + imgList.length
       imgList.forEach(x => openDown(x.link, e, x.name))
       const link1 = imgList.map(x =>  x.link).join('\n')
       const link2 = imgList.map(x =>  `aria2c -o ${x.name} ${x.link}`).join('\n')
       const content = `<html><head><meta charset="utf-8"><title>获取链接</title></head><body><textarea style="width: 850px; height: 250px; margin: 30px;">${link1}</textarea>
       <textarea style="width: 850px; height: 250px; margin: 30px;">${link2}</textarea>
-      </body></html>`      
+      </body></html>`
       window.open(URL.createObjectURL(new Blob([content], {type : 'text/html'})))
     }
     document.querySelector('.main-submenu').insertAdjacentElement('afterBegin', domDL)
@@ -279,13 +279,17 @@ const init = () => {
       postion: 'beforeBegin'
     }
     createDom(cfg)
-  }else if (hostname === "www.tumblr.com") { //在主页要一张张点开保存，无法连续翻页保存
+  }else if (hostname === "www.tumblr.com") {
     window.addEventListener('mouseover', ({ target }) => {
       const src = target && target.srcset
       const parent = target.parentElement
-      if (target.tagName == 'IMG' ) {
+      const next = parent && parent.nextElementSibling
+      if (target.tagName == 'IMG') {
         const srcarray = src.split(",")
         const link = srcarray[srcarray.length-1].replace(/[0-9]+w/g,"").trim()
+        if (next && next.className.includes('hx-download-original-images-tool')) {
+          updateLink(next, link)
+        }else {
         const style = 'top: 40px;right: 10px;'
         const cfg = {
           parent,
@@ -293,6 +297,8 @@ const init = () => {
           style
         }
         createDom(cfg)
+        console.log(cfg)
+        }
       }
     })
   }
